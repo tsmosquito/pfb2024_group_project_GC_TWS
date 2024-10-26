@@ -8,6 +8,7 @@ Scripts and other files for our python coding project
 5. Pull request
 ## Members
 1. Caitlin Millett
-2. Tim Schwanitz
-3. Johanna Seitz-Holland
+2. Rada Malko
+3. Tim Schwanitz
+4. Johanna Seitz-Holland
 
