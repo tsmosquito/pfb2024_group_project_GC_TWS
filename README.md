@@ -6,6 +6,7 @@ Scripts and other files for our python coding project
 3. Git push
 4. Go to YOUR FORK Github
 5. Pull request
+6. After accepted, you can pull
 ## Members
 1. Caitlin Millett
 2. Rada Malko
