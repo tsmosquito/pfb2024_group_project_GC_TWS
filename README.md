@@ -4,8 +4,8 @@ Scripts and other files for our python coding project
 1. Git add
 2. Git commit
 3. Git push
-4. Go to YOUR FORK Github
-5. Sync repo (you can't pull unless you are using the most recent version)
+4. Go to YOUR FORK Github (and refresh your page!)
+5. Sync repo (you can't pull unless you are using the most recent version!)
 6. Pull request
 7. After accepted, you can pull
 ## Members
