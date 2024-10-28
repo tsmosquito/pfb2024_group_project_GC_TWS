@@ -19,6 +19,7 @@ Output: is a corrupted fasta file with 24 (X/Y are separately stored) headers an
 
 ###Final code that works as stated above
 
+
 import re
 import sys
 
@@ -32,9 +33,9 @@ with open(sys.argv[1], 'r') as fasta_in_fh, open(sys.argv[2], 'w') as fasta_out_
     for line in fasta_in_fh:
         if line.startswith('>'):
             # Check for "protein_coding" in the header line
-            if 'protein_coding' in line:
+            if 'protein_coding' in line and 'scaffold' not in line and 'VNFC' not in line: #VNFC added to handle whale genome
                 # Extract chromosome and gene ID from the header
-                chrom_match = re.search(r'^>.*:([\dXY]\d?):.*gene:(ENSG\S*)\s', line)
+                chrom_match = re.search(r'^>.*:([\dXY]\d?):.*gene:(ENS\S*)\s', line) #ENSG to ENS for whale genome
                 if chrom_match:
                     chrom_id = chrom_match.group(1)
                     current_gene_id = chrom_match.group(2)
@@ -50,16 +51,57 @@ with open(sys.argv[1], 'r') as fasta_in_fh, open(sys.argv[2], 'w') as fasta_out_
                 current_gene_id = None
                 
         else:
-            # Only append if we have a valid gene ID and it's the first occurrence
-            if current_gene_id is not None:
+            # Only append if we have a valid gene ID and it's a multiple of 3
+            if current_gene_id is not None and len(line.strip()) % 3 == 0:  # Check if line length is a multiple of 3
                 chrom_dict[chrom_id] += line  # Append sequence lines
 
     # Write output
     for key in chrom_dict:
-        fasta_out_fh.write(f">{key}\n{chrom_dict[key]}")
-
+        fasta_out_fh.write(f">{key}\n{chrom_dict[key]}")  # Added newline for better formatting
 
 ######Archived versions of the code that weren't quite working but were close:
+
+###Code that didn't take out multiples of three
+
+# import re
+# import sys
+
+# chrom_dict = {}
+# gene_id_dict = {}
+
+# with open(sys.argv[1], 'r') as fasta_in_fh, open(sys.argv[2], 'w') as fasta_out_fh:
+#     current_gene_id = None  # Store the current gene ID
+#     header = ''
+    
+#     for line in fasta_in_fh:
+#         if line.startswith('>'):
+#             # Check for "protein_coding" in the header line
+#             if 'protein_coding' in line and 'scaffold' not in line:
+#                 # Extract chromosome and gene ID from the header
+#                 chrom_match = re.search(r'^>.*:([\dXY]\d?):.*gene:(ENSG\S*)\s', line)
+#                 if chrom_match:
+#                     chrom_id = chrom_match.group(1)
+#                     current_gene_id = chrom_match.group(2)
+
+#                     # Initialize if this gene ID hasn't been seen before
+#                     if current_gene_id not in gene_id_dict:
+#                         gene_id_dict[current_gene_id] = True  # Mark it as seen
+#                         chrom_dict.setdefault(chrom_id, '')  # Initialize if not present
+#                     else:
+#                         current_gene_id = None  # Reset to avoid duplicates
+#             else:
+#                 # Skip lines that don't contain "protein_coding"
+#                 current_gene_id = None
+                
+#         else:
+#             # Only append if we have a valid gene ID and it's the first occurrence and if a multiple of 3
+#             if current_gene_id is not None and (len(line)%3 != 0):
+#                 chrom_dict[chrom_id] += line  # Append sequence lines
+
+#     # Write output
+#     for key in chrom_dict:
+#         fasta_out_fh.write(f">{key}\n{chrom_dict[key]}")
+
 
 ###MY CODE THAT WASN'T QUITE WORKING
 
